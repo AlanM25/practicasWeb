@@ -1,0 +1,101 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: black;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    color: whitesmoke;
+    text-align: center;
+}
+
+a {
+    color: whitesmoke;
+    text-decoration: none;
+}
+
+h1 a {
+    color: whitesmoke;
+    text-decoration: none;
+}
+
+.contenedor {
+    display: flex;
+    flex-direction: row;
+    padding: 20px;
+    margin: 50px 150px;
+}
+
+.tabla {
+    justify-content: left;
+    width: 500px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.field {
+    border: 1px solid black;
+    border-radius: 8px;
+    background-color: #000000;
+    box-shadow: 0 2px 10px white;
+    width: 150px;
+    height: 150px;
+    padding: 5px;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    color: white;
+    font-size: 8em;
+}
+
+.field:hover {
+    background-color: #4b4b4b;
+}
+
+.fila {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.columna{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.scores {
+    font: bold;
+    box-shadow: 0 2px 10px white;
+    background-color: #4b4b4b;
+    color: white;
+    width: 400px;
+    margin-left: 400px;
+}
+
+.scores h3 {
+    font-size: x-large;
+    text-align: center;
+}
+
+.scores p {
+    margin-left: 30px;
+    font-size: medium;
+    text-align: justify;
+}
+
+.contenedor-time {
+    display: flex;
+    flex-direction: row;
+    padding: 20px;
+    margin: 50px 330px;
+}
+
+.time {
+    font-size: xx-large;
+    color: white;
+}
