@@ -26,26 +26,76 @@ const winningCombinations = [
 ];
 
 const saveScoreIfQualified = (time) => {
-    const scores = JSON.parse(localStorage.getItem('scores')) || [];
-    if (scores.length < 10 || time < scores[scores.length - 1].time) {
-        const name = prompt('Ingresa tu nombre:');
-        const date = new Date().toLocaleString();
-        scores.push({ name, time, date });
-        scores.sort((a, b) => a.time - b.time);
-        if (scores.length > 10) {
-            scores.pop();
-        }
-        localStorage.setItem('scores', JSON.stringify(scores));
-        displayScores();
+    const name = prompt('Ingresa tu nombre:');
+    if (!name) {
+        console.error("Nombre del jugador no proporcionado.");
+        return;
     }
+    const gameName = "Tic-Tac-Toe-Alan";
+
+    // Enviar los datos al servidor
+    enviarPuntaje(time, name, gameName);
+};
+
+const enviarPuntaje = (score, player, game) => {
+    const params = new URLSearchParams();
+    params.append("score", score);
+    params.append("player", player);
+    params.append("game", game);
+
+    fetch("http://primosoft.com.mx/games/api/addscore.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: params.toString(),
+    })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error(`Error al enviar puntaje: ${response.status} ${response.statusText}`);
+            }
+            return response.text();
+        })
+        .then((data) => {
+            console.log("Puntaje enviado exitosamente:", data);
+        })
+        .catch((error) => {
+            console.error("Hubo un problema con la solicitud:", error);
+        });
 };
 
 const displayScores = () => {
-    const scores = JSON.parse(localStorage.getItem('scores')) || [];
-    viewScores.innerHTML = scores.map((score, index) => 
-        `${index + 1}.- ${score.name} - ${formatTime(score.time)} - ${score.date}`
-    ).join('<br>');
+    fetch("ver-scores.php")
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error(`Error al obtener puntajes: ${response.status} ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then((scores) => {
+            if (scores.error) {
+                viewScores.innerHTML = scores.error;
+                return;
+            }
+
+            if (!scores || scores.length === 0) {
+                viewScores.innerHTML = "No hay puntajes disponibles.";
+                return;
+            }
+
+            // Mostrar puntajes en el DOM
+            viewScores.innerHTML = scores
+                .map((score, index) => 
+                    `${index + 1}.- ${score.player} - ${formatTime(score.score)} - ${score.date}`
+                )
+                .join('<br>');
+        })
+        .catch((error) => {
+            console.error("Error al obtener los puntajes:", error);
+            viewScores.innerHTML = "Error al cargar los puntajes. Por favor, intenta más tarde.";
+        });
 };
+
 
 const checkWinner = () => {
     let roundWon = false;
