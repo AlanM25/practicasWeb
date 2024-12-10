@@ -66,9 +66,9 @@
                                         $esPublico = $archivo['es_publico'] == 1;
                                         $tamanoKB = round($archivo['tamaño'] / 1024, 2);
                                         $urlArchivo = APP_ROOT . "archivo.php?id=" . $archivo['id'] . "&descargar=0";
-                                        $urlUsuario = APP_ROOT . "archivos_usuario.php?usuario=" . $archivo['usuario_username']; 
+                                        $urlUsuario = APP_ROOT . "archivos_usuario.php?usuario=" . $archivo['username']; 
 
-                                        if ($esPublico || $archivo['usuario_username'] === $USUARIO_USERNAME) {
+                                        if ($esPublico || $archivo['username'] === $USUARIO_USERNAME) {
                                             echo "<tr>";
                                             echo "<td><a href='$urlArchivo' target='_blank'>" . htmlspecialchars($archivo['nombre_archivo']) . "</a></td>";
                                             echo "<td>" . htmlspecialchars($archivo['descripcion']) . "</td>";
