@@ -26,46 +26,6 @@
 
         <div class="leftcolumn">
 
-        <div class="card">
-            <h2>Listado de Archivos</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Nombre del Archivo</th>
-                        <th>Fecha y Hora de Subida</th>
-                        <th>Peso (KB)</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-
-                    require APP_PATH . "data_access/db.php";
-                    
-                    $db = getDbConnection();
-                    $stmt = $db->prepare("SELECT id, nombre_archivo, fecha_subido, tamaño FROM archivos WHERE usuario_subio_id = :usuario_id");
-                    $stmt->bindParam(":usuario_id", $USUARIO_ID, PDO::PARAM_INT);
-                    $stmt->execute();
-                    $archivos = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                    foreach ($archivos as $archivo) {
-                        $tamanoKB = round($archivo['tamano'] / 1024, 2);
-                        $urlArchivo = APP_ROOT . "archivo.php?id=" . $archivo['id'] . "&descargar=0";
-                        echo "<tr>";
-                        echo "<td><a href='$urlArchivo' target='_blank'>" . htmlspecialchars($archivo['nombre_archivo']) . "</a></td>";
-                        echo "<td>" . htmlspecialchars($archivo['fecha_subido']) . "</td>";
-                        echo "<td>" . htmlspecialchars($tamanoKB) . "</td>";
-                        echo "<td>
-                                <button class='make-public' data-id='" . $archivo['id'] . "'>Hacer Público</button>
-                                <button class='delete-file' data-id='" . $archivo['id'] . "'>Borrar</button>
-                            </td>";
-                        echo "</tr>";
-                    }
-                    ?>
-                </tbody>
-            </table>
-        </div>
-
             <div class="card">
                 <h2>Creación Dinámica de HTML con PHP</h2>
                 <h5>Ciclos para recorrer arrays, <?php echo $hoy->format("d/m/Y"); ?></h5>
@@ -105,64 +65,5 @@
     <div class="footer">
         <h2>ITI - Programación Web</h2>
     </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('.make-public').forEach(button => {
-                button.addEventListener('click', async () => {
-                    const fileId = button.getAttribute('data-id');
-                    const response = await fetch('<?=APP_ROOT?>ajax/make_public.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ id: fileId }),
-                    });
-                    const result = await response.json();
-                    if (result.success) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Éxito',
-                            text: 'Archivo hecho público exitosamente.',
-                        });
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: 'Error al hacer público el archivo.',
-                        });
-                    }
-                });
-            });
-
-            document.querySelectorAll('.delete-file').forEach(button => {
-                button.addEventListener('click', async () => {
-                    const fileId = button.getAttribute('data-id');
-                    const response = await fetch('<?=APP_ROOT?>ajax/delete_file.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ id: fileId }),
-                    });
-                    const result = await response.json();
-                    if (result.success) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Éxito',
-                            text: 'Archivo borrado exitosamente.',
-                        }).then(() => {
-                            button.closest('tr').remove();
-                        });
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: 'Error al borrar el archivo.',
-                        });
-                    }
-                });
-            });
-        });
-    </script>   
 </body>
 </html>

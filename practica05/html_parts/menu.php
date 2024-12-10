@@ -9,6 +9,9 @@
         <?php if ($USUARIO_ES_ADMIN) : ?>
             <a href="<?= APP_ROOT ?>user_management.php">Gestión de Usuarios</a>
         <?php endif ?>
+        <a href="<?= APP_ROOT ?>vistaparaArchivos.php">Mis Archivos</a>
+        <a href="<?= APP_ROOT ?>buscar_usuario.php">Buscar usuarios</a>
+        <a href="<?= APP_ROOT ?>archivos_favoritos.php">Archivos Favoritos</a>
         <a href="#" style="float:right">Link</a>
     <?php else: ?>
         <a href="<?= $APP_ROOT . "login.php" ?>">Login</a>

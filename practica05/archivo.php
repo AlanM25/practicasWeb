@@ -49,8 +49,8 @@ if (!$id) {
 }
 
 // Consulta del registro del archivo en DB
-$sqlCmd = "SELECT * FROM archivos WHERE id = ?";
-$sqlParam = [$id]; // Parámetros de la consulta
+$sqlCmd = "SELECT * FROM archivos WHERE id = ? AND (usuario_subio_id = ? OR es_publico = 1)";
+$sqlParam = [$id, $USUARIO_ID]; // Parámetros de la consulta
 $db = getDbConnection();  // conexión a DB por PDF object
 $stmt = $db->prepare($sqlCmd);  // obtención del statement
 $stmt->execute($sqlParam);  // ejecución de la consulta
